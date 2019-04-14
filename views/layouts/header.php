@@ -42,7 +42,7 @@ use yii\helpers\Html;
                                     <li>
                                         <a class="notification-link" 
                                            href="/stats/index/<?= $n->execution_id ?>"
-                                           data-id="<?= $n->execution_id ?>">
+                                           data-id="<?= $n->id ?>">
                                             <i class="fa fa-users <?= $notificationClass ?>"></i> <?= $n->message ?>
                                         </a>
                                     </li>

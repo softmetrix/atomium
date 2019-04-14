@@ -168,6 +168,9 @@ class ExecuteJobController extends Controller
         $model->duration = $duration;
         $model->success = $success;
         $model->save();
+        if (!$success) {
+            $this->generateNotification($model);
+        }
         return $model;
     }
     protected function sendMail($execution)
@@ -196,5 +199,15 @@ class ExecuteJobController extends Controller
                     ->send();
             }
         }
+    }
+    
+    protected function generateNotification($execution)
+    {
+        $notification = new PjeNotification();
+        $notification->execution_id = $execution->id;
+        $notification->notification_type = PjeNotification::TYPE_ERROR;
+        $notification->notification_date = $execution->end_time;
+        $notification->message = 'Job failed';
+        $notification->save();
     }
 }
