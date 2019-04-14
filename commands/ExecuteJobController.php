@@ -11,6 +11,7 @@ use app\components\SystemInfoThread;
 use app\components\ExecuteStepThread;
 use yii\swiftmailer\Mailer;
 use app\models\PjeJob;
+use yii\console\ExitCode;
 
 class ExecuteJobController extends Controller
 {
@@ -27,10 +28,11 @@ class ExecuteJobController extends Controller
     {
         $job = PjeJob::find()->where(['id' => $jobId])->one();
         if ($job->parallel) {
-            $this->executeParallel($jobId);
+            $exitCode = $this->executeParallel($jobId);
         } else {
-            $this->executeSequential($jobId);
+            $exitCode = $this->executeSequential($jobId);
         }
+        return $exitCode;
     }
     
     protected function executeSequential($jobId)
@@ -74,6 +76,7 @@ class ExecuteJobController extends Controller
         $jobDuration = strtotime($jobEndTime) - strtotime($jobStartTime);
         $execution = $this->completeExecution($executionId, $jobStartTime, $jobEndTime, $jobDuration, $jobSuccess);
         $this->sendMail($execution);
+        return $jobSuccess ? ExitCode::OK : ExitCode::UNSPECIFIED_ERROR;
     }
    
     protected function executeParallel($jobId)
@@ -125,6 +128,7 @@ class ExecuteJobController extends Controller
         $jobDuration = strtotime($jobEndTime) - strtotime($jobStartTime);
         $execution = $this->completeExecution($executionId, $jobStartTime, $jobEndTime, $jobDuration, $jobSuccess);
         $this->sendMail($execution);
+        return $jobSuccess ? ExitCode::OK : ExitCode::UNSPECIFIED_ERROR;
     }
 
     protected function getJobSteps($jobId)
