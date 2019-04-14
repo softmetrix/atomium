@@ -22,7 +22,7 @@ use yii\helpers\Html;
                 <?php
                 $notifications = app\models\PjeNotification::find()->where([
                     'seen' => 0
-                ])->orWhere(['seen' => null])->all();
+                ])->orWhere(['seen' => null])->orderBy('id desc')->all();
                 ?>
                 <li class="dropdown notifications-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
