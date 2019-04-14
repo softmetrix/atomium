@@ -12,6 +12,7 @@ use Yii;
  * @property string $message
  * @property integer $notification_type
  * @property string $notification_date
+ * @property integer $seen
  *
  * @property PjeExecution $execution
  */
@@ -36,7 +37,7 @@ class PjeNotification extends \yii\db\ActiveRecord
     {
         return [
             [['execution_id'], 'required'],
-            [['execution_id', 'notification_type'], 'integer'],
+            [['execution_id', 'notification_type', 'seen'], 'integer'],
             [['notification_date'], 'safe'],
             [['message'], 'string', 'max' => 255],
             [['execution_id'], 'exist', 'skipOnError' => true, 'targetClass' => PjeExecution::className(), 'targetAttribute' => ['execution_id' => 'id']],
