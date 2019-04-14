@@ -40,7 +40,9 @@ use yii\helpers\Html;
                                         $notificationClass = 'text-red';
                                     } ?>
                                     <li>
-                                        <a href="#">
+                                        <a class="notification-link" 
+                                           href="/stats/index/<?= $n->execution_id ?>"
+                                           data-id="<?= $n->execution_id ?>">
                                             <i class="fa fa-users <?= $notificationClass ?>"></i> <?= $n->message ?>
                                         </a>
                                     </li>
@@ -70,3 +72,20 @@ use yii\helpers\Html;
         </div>
     </nav>
 </header>
+
+<?php
+$js = <<<EOT
+    $(function(){
+        $('.notification-link').click(function(event){
+            event.preventDefault();
+            var href = $(this).attr('href');
+            var id = $(this).data('id')
+            $.get( "/notifications/seen/" + id, function( data ) {
+                window.location.href = href;
+            });
+            return false;
+        });
+    });
+EOT;
+$this->registerJs($js);
+?>
