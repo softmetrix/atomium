@@ -1,5 +1,29 @@
 # Atomium
-## Installation
+## Installation (Docker)
+#### Basic docker-compose.yml setup
+
+    version: "3.3"
+    services:
+        atomium:
+            image: softmetrixgroup/atomium:0.1.0
+            ports:
+                - "22111:80"
+            volumes:
+                - /path-to-scripts:/var/www/html/scripts
+            environment:
+                DB_DSN: 'mysql:host=localmysql;dbname=atomium_db'
+                DB_USER: 'atomium_user'
+                DB_PASS: 'atomium123'
+                MAIL_HOST: 'smtp.yourserver.com'
+                MAIL_USER: 'yourmail@yourserver.com'
+                MAIL_PASS: 'password'
+                MAIL_PORT: '587'
+                MAIL_ENCRYPT: 'tls'
+                MAIL_FROM: 'yourmail@yourserver.com'
+                UM_USER: 'admin'
+                UM_PASS: '22engine11!'
+                APP_URL: 'http://localhost:22111'
+## Installation from repository
 #### Clone repository
     git clone https://github.com/softmetrix/atomium.git
 #### Web server configurtion
