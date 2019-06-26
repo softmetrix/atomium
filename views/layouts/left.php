@@ -35,7 +35,6 @@
                         'url' => '#',
                         'items' => [
                             ['label' => 'Manage', 'icon' => 'th-list', 'url' => ['/step']],
-                            ['label' => 'Add', 'icon' => 'plus', 'url' => ['/step/create']],
                         ],
                     ],
                 ],

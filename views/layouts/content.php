@@ -7,7 +7,7 @@ use dmstr\widgets\Alert;
     <section class="content-header">
         <?php if (isset($this->blocks['content-header'])) {
     ?>
-            <h1><?= $this->blocks['content-header'] ?></h1>
+            <h1><?= $this->blocks['content-header']; ?></h1>
         <?php
 } else {
         ?>
@@ -30,20 +30,20 @@ use dmstr\widgets\Alert;
             [
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]
-        ) ?>
+        ); ?>
     </section>
 
     <section class="content">
-        <?= Alert::widget() ?>
-        <?= $content ?>
+        <?= Alert::widget(); ?>
+        <?= $content; ?>
     </section>
 </div>
 
 <footer class="main-footer">
     <div class="pull-right hidden-xs">
-        <b>Version</b> 2.0
+        <b>Version</b> 0.2.1
     </div>
-    <strong>&copy; 2015 - <?= date('Y') ?> Softmetrix. 
+    <strong>&copy; 2015 - <?= date('Y'); ?> Softmetrix. 
         <a href="https://opensource.org/licenses/BSD-3-Clause" target="_blank">BSD licence</a></strong>
 </footer>
 
