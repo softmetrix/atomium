@@ -1,5 +1,5 @@
 <?php
-use yii\bootstrap4\Html;
+use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
 
 ?>
@@ -15,7 +15,7 @@ use yii\helpers\ArrayHelper;
                                             $selectedJob,
                                             ['' => '-- all jobs --'] + ArrayHelper::map($jobs, 'id', 'title'),
                                             ['class' => 'form-control']
-) ?>
+); ?>
                 </div>
               </div>
               <div class="box-footer">
