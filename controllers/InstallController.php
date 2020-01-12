@@ -11,6 +11,7 @@ class InstallController extends BaseController
             return $this->redirect('/');
         }
         $basePath = \Yii::$app->basePath;
+        chmod($basePath.'/install', 'a+x');
         $retVal = null;
         echo '<pre>';
         passthru("cd {$basePath}; ./install", $retVal);

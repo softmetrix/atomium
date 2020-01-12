@@ -27,8 +27,7 @@ phpunit.phar
 /phpunit.xml
 
 # config files
-config/db.php
-config/params.php
+config/config.php
 config/additional.php
 
 # phpcsfixer
