@@ -22,6 +22,7 @@ return [
             'password' => $config['mailer_pass'],
             'port' => $config['mailer_port'],
             'encryption' => $config['mailer_encryption'],
+            'authMode' => $config['mailer_auth_mode'],
         ],
     ],
     'mailer_from' => $config['mailer_from'],

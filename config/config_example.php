@@ -23,6 +23,8 @@ $config['mailer_pass'] = '';
 $config['mailer_port'] = '587';
 // Mailer srever encryption
 $config['mailer_encryption'] = 'tls';
+// Mailer srever encryption
+$config['mailer_auth_mode'] = 'login';
 // Mailer from
 $config['mailer_from'] = '';
 // Application account user name
