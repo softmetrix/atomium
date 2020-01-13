@@ -11,6 +11,7 @@ class BaseController extends Controller
     {
         $this->installation($action);
         $this->authentication($action);
+        $this->closeInterrupted();
 
         return parent::beforeAction($action);
     }
@@ -44,5 +45,12 @@ class BaseController extends Controller
     protected function isInstalled()
     {
         return Yii::$app->db->getTableSchema('pje_execution_step', true) !== null;
+    }
+
+    private function closeInterrupted()
+    {
+        $basePath = \Yii::$app->basePath;
+        $cmdPath = $basePath.'/yii close-interrupted 2>&1';
+        shell_exec($cmdPath);
     }
 }

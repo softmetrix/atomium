@@ -23,6 +23,19 @@
                 UM_USER: 'admin'
                 UM_PASS: '22engine11!'
                 APP_URL: 'http://localhost:22111'
+
+## Installation from ZIP package
+#### Download latest stable version
+ZIP package is provided in each release. Download ZIP package from last stable release.
+#### Unpack ZIP archive into web root folder
+Configure your web server and unpack ZIP archive into web root folder.
+#### Configuration file
+Copy /config/config_example.php to /config/config.php. Fill /config/config.php according to 
+your system environment.
+#### First time install
+Open application in web browser first time. It will call installation script. Once installation is 
+completed you can start using application.
+
 ## Installation from repository
 #### Clone repository
     git clone https://github.com/softmetrix/atomium.git
