@@ -1,0 +1,47 @@
+version: "3.3"
+services:
+  atomium:
+    build:
+      context: './docker/'
+    networks:
+      - frontend
+      - backend
+    ports:
+      - "22111:80"
+    depends_on:
+      - localmysql
+    volumes:
+      - ./scripts:/var/www/html/scripts
+    environment:
+      DB_DSN: 'mysql:host=localmysql;dbname=atomium_db'
+      DB_USER: 'atomium_user'
+      DB_PASS: 'atomium123'
+      MAIL_HOST: 'smtp.yourserver.com'
+      MAIL_USER: 'yourmail@yourserver.com'
+      MAIL_PASS: 'password'
+      MAIL_PORT: '587'
+      MAIL_ENCRYPT: 'tls'
+      MAIL_FROM: 'yourmail@yourserver.com'
+      UM_USER: 'admin'
+      UM_PASS: '22engine11!'
+      APP_URL: 'http://localhost:22111'
+  localmysql:
+    image: mysql:5.7.23
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    networks:
+      - frontend
+      - backend
+    expose:
+      - "11222"
+    ports:
+      - "11222:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root123'
+      MYSQL_DATABASE: 'atomium_db'
+      MYSQL_USER: 'atomium_user'
+      MYSQL_PASSWORD: 'atomium123'
+      MYSQL_ROOT_HOST: '%'
+networks:
+  frontend:
+  backend:
