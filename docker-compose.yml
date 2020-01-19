@@ -11,7 +11,7 @@ services:
     depends_on:
       - localmysql
     volumes:
-      - ./scripts:/var/www/html/scripts
+      - "./docker/scripts:/var/www/html/scripts"
     environment:
       DB_DSN: 'mysql:host=localmysql;dbname=atomium_db'
       DB_USER: 'atomium_user'
