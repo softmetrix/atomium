@@ -4,22 +4,27 @@ namespace app\controllers;
 
 class InstallController extends BaseController
 {
+    public function beforeAction($action)
+    {
+        $this->layout = 'install';
+
+        return parent::beforeAction($action);
+    }
+
     public function actionIndex()
     {
-        $this->layout = false;
         if ($this->isInstalled()) {
             return $this->redirect('/');
         }
         $basePath = \Yii::$app->basePath;
+        $output = [];
         $retVal = null;
-        echo '<pre>';
-        passthru("cd {$basePath}; ./install", $retVal);
-        echo '</pre>';
-        if ($retVal === 0) {
-            echo 'INSTALLED<br />';
-            echo '<a href="/">Go to application</a>';
-        } else {
-            echo 'Something went wrong';
-        }
+        exec("cd {$basePath}; ./install", $output, $retVal);
+        $output = implode("\n", $output);
+
+        return $this->render('index', [
+            'output' => $output,
+            'retVal' => $retVal,
+        ]);
     }
 }
