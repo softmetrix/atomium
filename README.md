@@ -119,3 +119,30 @@ Execute composer update from terminal:
 Add following item to crontab:
 
     * * * * * /path-to-cloned-repo/yii close-interrupted
+
+## Usage
+#### Creating step, job and component classes
+Step, job and component classes can be created manually. However, it is easier to create them using command line utility. Navigate to root of application directory. To create step class execute following command:
+
+    yii create -n=StepName -t=step
+
+It will generate empty class:
+
+    namespace app\components;
+    use Yii;
+
+    class StepNameStep extends Step {
+        protected function execute() {
+            $success = 1;
+            $response = 'OK';
+            return self::generateResponse($success, $response);
+        }
+    }
+
+Command for creating jobs:
+
+    yii create -n=JobName -t=job
+
+Command for creating components:
+
+    yii create -n=ComponentName -t=component
