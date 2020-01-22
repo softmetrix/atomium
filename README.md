@@ -120,6 +120,32 @@ Add following item to crontab:
 
     * * * * * /path-to-cloned-repo/yii close-interrupted
 
+## Additional configuration
+There is an option if you need additional configuration options which is not achievable using Atomium API.
+Create extra_config.php file unther the config subdirectory. This is an example:
+
+    <?php
+    $extra = [];
+    $extra['components'] = [];
+    $extra['components']['db2'] = [
+        'class' => 'yii\db\Connection',
+        'dsn' => 'mysql:host=targetmysql;dbname=target_db',
+        'username' => 'target_user',
+        'password' => 'target123',
+        'charset' => 'utf8',
+    ];
+    return $extra;
+
+It will create Yii::$app->db2 which can be used in jobs. 
+For more details please read [Yii2 docs](https://www.yiiframework.com/doc/api/2.0) since Atomium is based on Yii2.
+
+For Docker setup add VOLUME entry to docker-compose.yml file:
+
+    volumes:
+        ...
+        - /path-to-conf/extra_config.php:/var/www/html/atomium/config/extra_config.php
+        ...
+
 ## Usage
 #### Creating step, job and component classes
 Step, job and component classes can be created manually. However, it is easier to create them using command line utility. Navigate to root of application directory. To create step class execute following command:

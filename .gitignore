@@ -29,6 +29,7 @@ phpunit.phar
 # config files
 config/config.php
 config/additional.php
+config/extra_config.php
 
 # phpcsfixer
 /.php_cs.cache
