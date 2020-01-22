@@ -115,12 +115,15 @@ Execute composer update from terminal:
     composer update
 #### Execute migrations
     /path-to-cloned-repo/yii migrate
-#### CRON setup
-Add following item to crontab:
+
+## CRON setup (optional)
+This step is not necessary but it is recommended. Application might crash in the middle of the job for some reason (e.g. power outage, operatyng system crash). Application will close interrupted job on page open. However, it is reccomended to close job and notify user as soon as job is crashed. Add following item to crontab:
 
     * * * * * /path-to-cloned-repo/yii close-interrupted
 
-## Additional configuration
+If your operatyng sistem is not Linux or OSX, use default scheduling system on your OS. 
+
+## Additional configuration (optional)
 There is an option if you need additional configuration options which is not achievable using Atomium API.
 Create extra_config.php file unther the config subdirectory. This is an example:
 
