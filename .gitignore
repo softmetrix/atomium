@@ -36,3 +36,6 @@ config/extra_config.php
 
 # vs code
 *.code-workspace
+
+# docker atomium.zip
+/docker/atomium.zip

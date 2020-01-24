@@ -41,7 +41,7 @@ use dmstr\widgets\Alert;
 
 <footer class="main-footer">
     <div class="pull-right hidden-xs">
-        <b>Version</b> 0.4.2
+        <b>Version</b> 0.5.0
     </div>
     <strong>&copy; 2015 - <?= date('Y'); ?> Softmetrix. 
         <a href="https://opensource.org/licenses/BSD-3-Clause" target="_blank">BSD licence</a></strong>

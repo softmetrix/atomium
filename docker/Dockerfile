@@ -5,7 +5,7 @@ RUN apt update -y
 RUN apt install zip unzip wget -y
 RUN docker-php-ext-install mysqli pdo_mysql
 WORKDIR /var/www/html
-RUN wget https://github.com/softmetrix/atomium/releases/download/v0.4.2/atomium.zip
+COPY atomium.zip ./
 RUN unzip atomium.zip
 RUN rm atomium.zip
 WORKDIR /var/www/html/atomium
