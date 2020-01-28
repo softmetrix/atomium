@@ -62,9 +62,7 @@ class CloseInterruptedController extends Controller
 
     protected function pidIsRunning($pid)
     {
-        if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
-            $running = file_exists("/proc/{$pid}");
-        } else {
+        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
             $taskList = shell_exec('tasklist 2>NUL');
             $taskTable = explode("\n", trim($taskList));
             $delimiters = explode(' ', $taskTable[1]);
@@ -77,6 +75,19 @@ class CloseInterruptedController extends Controller
                 }
             }
             $running = in_array($pid, $pids);
+        } elseif (PHP_OS == 'Darwin') {
+            $psOutput = shell_exec('ps -A -o pid');
+            $pids = explode("\n", $psOutput);
+            $pids = array_map('trim', $pids);
+            $pids = array_filter($pids, function ($e) {
+                return $e != 'PID' && $e != '';
+            });
+            $pids = array_map('intval', $pids);
+            $running = in_array($pid, $pids);
+        } elseif (PHP_OS == 'Linux') {
+            $running = file_exists("/proc/{$pid}");
+        } else {
+            $running = true;
         }
 
         return $running;

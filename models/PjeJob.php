@@ -3,22 +3,23 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "pje_job".
  *
- * @property integer $id
- * @property string $title
- * @property string $description
- * @property string $job_class
- * @property integer $parallel
- *
+ * @property int          $id
+ * @property string       $title
+ * @property string       $description
+ * @property string       $job_class
+ * @property int          $parallel
+ * @property int          $rollback_job_id
  * @property PjeJobStep[] $pjeJobSteps
  */
 class PjeJob extends \yii\db\ActiveRecord
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function tableName()
     {
@@ -26,7 +27,7 @@ class PjeJob extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
@@ -34,12 +35,12 @@ class PjeJob extends \yii\db\ActiveRecord
             [['title'], 'required'],
             [['description', 'job_class'], 'string'],
             [['title'], 'string', 'max' => 255],
-            [['parallel'], 'integer']
+            [['parallel', 'rollback_job_id'], 'integer'],
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
@@ -57,17 +58,40 @@ class PjeJob extends \yii\db\ActiveRecord
     {
         return $this->hasMany(PjeJobStep::className(), ['job_id' => 'id']);
     }
-    
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRollbackJob()
+    {
+        return $this->hasOne(PjeJob::className(), ['id' => 'rollback_job_id']);
+    }
+
     public static function jobClasses()
     {
         $stepsPath = Yii::$app->params['jobs_path'];
-        $files = glob($stepsPath . DIRECTORY_SEPARATOR . '*Job.php');
+        $files = glob($stepsPath.DIRECTORY_SEPARATOR.'*Job.php');
         $jobClasses = [];
         $jobClasses[''] = '-- none --';
-        foreach($files as $file) {
+        foreach ($files as $file) {
             $fileName = pathinfo($file, PATHINFO_FILENAME);
             $jobClasses[$fileName] = $fileName;
         }
+
         return $jobClasses;
+    }
+
+    public static function rollbackJobs($jobId = false)
+    {
+        $rollbackJobs = [];
+        $rollbackJobs[''] = '-- none --';
+        $jobsQuery = PjeJob::find();
+        if ($jobId) {
+            $jobsQuery = $jobsQuery->where(['<>', 'id', $jobId]);
+        }
+        $jobs = $jobsQuery->all();
+        $rollbackJobs += ArrayHelper::map($jobs, 'id', 'title');
+
+        return $rollbackJobs;
     }
 }
