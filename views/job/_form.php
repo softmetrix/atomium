@@ -19,6 +19,8 @@ use yii\widgets\ActiveForm;
 
         <?= $form->field($model, 'parallel')->checkbox(); ?>
 
+        <?= $form->field($model, 'lock')->checkbox()->hint('Prevent simultaneous calls'); ?>
+
         <?= $form->field($model, 'rollback_job_id')->dropDownList(\app\models\PjeJob::rollbackJobs()); ?>
     </div>
     <!-- /.box-body -->

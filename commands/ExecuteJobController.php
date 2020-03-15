@@ -33,10 +33,20 @@ class ExecuteJobController extends Controller
     protected function execute($jobId)
     {
         $job = PjeJob::find()->where(['id' => $jobId])->one();
-        if ($job->parallel) {
-            $exitCode = $this->executeParallel($jobId);
+        $lastExecutionId = $job->preventExecutionLock();
+        if (!$lastExecutionId) {
+            if ($job->parallel) {
+                $exitCode = $this->executeParallel($jobId);
+            } else {
+                $exitCode = $this->executeSequential($jobId);
+            }
         } else {
-            $exitCode = $this->executeSequential($jobId);
+            $notification = new PjeNotification();
+            $notification->execution_id = $lastExecutionId;
+            $notification->notification_type = PjeNotification::TYPE_WARNING;
+            $notification->notification_date = date('Y-m-d H:i:s');
+            $notification->message = 'Job locked';
+            $notification->save();
         }
 
         return $exitCode;

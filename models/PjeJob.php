@@ -13,6 +13,7 @@ use yii\helpers\ArrayHelper;
  * @property string       $description
  * @property string       $job_class
  * @property int          $parallel
+ * @property int          $lock
  * @property int          $rollback_job_id
  * @property PjeJobStep[] $pjeJobSteps
  */
@@ -35,7 +36,7 @@ class PjeJob extends \yii\db\ActiveRecord
             [['title'], 'required'],
             [['description', 'job_class'], 'string'],
             [['title'], 'string', 'max' => 255],
-            [['parallel', 'rollback_job_id'], 'integer'],
+            [['parallel', 'rollback_job_id', 'lock'], 'integer'],
         ];
     }
 
@@ -65,6 +66,31 @@ class PjeJob extends \yii\db\ActiveRecord
     public function getRollbackJob()
     {
         return $this->hasOne(PjeJob::className(), ['id' => 'rollback_job_id']);
+    }
+
+    public function isRunning()
+    {
+        $executionId = false;
+        $lastExecution = PjeExecution::find()
+            ->where(['job_id' => $this->id])
+            ->andWhere(['is', 'end_time', new \yii\db\Expression('null')])
+            ->orderBy('id desc')
+            ->one();
+        if ($lastExecution) {
+            $executionId = $lastExecution->id;
+        }
+
+        return $executionId;
+    }
+
+    public function preventExecutionLock()
+    {
+        $executionId = false;
+        if ($this->lock) {
+            $executionId = $this->isRunning();
+        }
+
+        return $executionId;
     }
 
     public static function jobClasses()
