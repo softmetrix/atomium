@@ -6,7 +6,6 @@ use Yii;
 use app\models\PjeJob;
 use app\models\PjeJobSearch;
 use app\models\PjeExecution;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
@@ -17,7 +16,7 @@ use yii\data\ActiveDataProvider;
 class JobController extends BaseController
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function behaviors()
     {
@@ -33,6 +32,7 @@ class JobController extends BaseController
 
     /**
      * Lists all PjeJob models.
+     *
      * @return mixed
      */
     public function actionIndex()
@@ -48,7 +48,9 @@ class JobController extends BaseController
 
     /**
      * Displays a single PjeJob model.
-     * @param integer $id
+     *
+     * @param int $id
+     *
      * @return mixed
      */
     public function actionView($id)
@@ -58,16 +60,17 @@ class JobController extends BaseController
         foreach ($executionHistory->models as $e) {
             $chartData[] = [
                 'title' => $e->start_time,
-                'value' => $e->duration
+                'value' => $e->duration,
             ];
         }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
             'executionHistory' => $executionHistory,
-            'chartData' => $chartData
+            'chartData' => $chartData,
         ]);
     }
-    
+
     private function getExecutionHistory($id)
     {
         $executionQuery = PjeExecution::find()
@@ -76,14 +79,16 @@ class JobController extends BaseController
                                     ->limit(10);
         $executionQuery->andWhere(['job_id' => $id]);
         $dataProvider = new ActiveDataProvider([
-            'query' => $executionQuery
+            'query' => $executionQuery,
         ]);
+
         return $dataProvider;
     }
 
     /**
      * Creates a new PjeJob model.
      * If creation is successful, the browser will be redirected to the 'view' page.
+     *
      * @return mixed
      */
     public function actionCreate()
@@ -102,7 +107,9 @@ class JobController extends BaseController
     /**
      * Updates an existing PjeJob model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     *
+     * @param int $id
+     *
      * @return mixed
      */
     public function actionUpdate($id)
@@ -121,7 +128,9 @@ class JobController extends BaseController
     /**
      * Deletes an existing PjeJob model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     *
+     * @param int $id
+     *
      * @return mixed
      */
     public function actionDelete($id)
@@ -131,11 +140,25 @@ class JobController extends BaseController
         return $this->redirect(['index']);
     }
 
+    public function actionRun($id)
+    {
+        $innerCmd = Yii::$app->basePath.DIRECTORY_SEPARATOR.'yii execute-job '.$id;
+        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+            $cmd = sprintf('%s &', $innerCmd, '/dev/null');
+        } else {
+            $cmd = sprintf('%s %s %s 2>&1 & echo $!', $innerCmd, '>', '/dev/null');
+        }
+        exec($cmd);
+    }
+
     /**
      * Finds the PjeJob model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
+     *
+     * @param int $id
+     *
      * @return PjeJob the loaded model
+     *
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)

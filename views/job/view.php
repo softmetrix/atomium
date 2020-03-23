@@ -35,13 +35,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     'header' => 'Job',
                     'value' => 'job.title',
                     'format' => 'raw',
-                    'value'=>function ($model) {
-                        return Html::a($model->job->title, '/stats/index/' . $model->id);
-                    }
+                    'value' => function ($model) {
+                        return Html::a($model->job->title, '/stats/index/'.$model->id);
+                    },
                 ],
                 [
                     'header' => 'Completed at',
-                    'value' => 'end_time'
+                    'value' => 'end_time',
                 ],
                 [
                     'header' => 'Status',
@@ -52,10 +52,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             return '<div class="badge badge-status bg-red">FAIL</div>';
                         }
                     },
-                    'format' => 'raw'
-                ]
-            ]
-            ])
+                    'format' => 'raw',
+                ],
+            ],
+            ]);
         ?>   
     </div>
     <!-- /.box-body -->
@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="col-md-6">
     <div class="box box-info">
     <div class="box-header with-border">
-      <h3 class="box-title">Command</h3>
+      <h3 class="box-title">Run Job</h3>
     </div>
     <!-- /.box-header -->
     <!-- form start -->
@@ -76,8 +76,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="fakeButtons fakeZoom"></div>
         </div>
         <div class="fakeScreen">
-          <p class="line1">$ <?= Yii::$app->basePath . DIRECTORY_SEPARATOR . 'yii execute-job ' , $model->id;?></p>
+          <p class="line1">$ <?= Yii::$app->basePath.DIRECTORY_SEPARATOR.'yii execute-job '.$model->id; ?></p>
           <p class="line4">><span class="cursor4">_</span></p>
+        </div>
+        <div class="text-center" style="padding-top: 10px;">
+            <button class="btn btn-primary btn-lg btn-block" id="run-job">Run</button>
         </div>
     </div>
     <!-- /.box-body -->
@@ -132,6 +135,16 @@ series.columns.template.fillOpacity = .8;
 var columnTemplate = series.columns.template;
 columnTemplate.strokeWidth = 2;
 columnTemplate.strokeOpacity = 1;
+
+$(function(){
+    $("#run-job").click(function(){
+        var r = confirm("Are you sure?");
+        if (r != true) {
+            return false;
+        } 
+        $.get('/job/run/{$model->id}');
+    });
+});
 EOT;
 $this->registerJs($js);
 ?>
