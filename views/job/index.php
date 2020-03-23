@@ -32,12 +32,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         [
                             'class' => 'yii\grid\ActionColumn',
-                            'template' => '{view} {update} {delete} {steps} {recipients}',
+                            'template' => '{view} {update} {steps} {recipients} {delete}',
                             'buttons' => [
+                                'view' => function ($url, $model) {
+                                    return Html::a('<button class="btn btn-default">View &nbsp;<i class="glyphicon glyphicon-eye-open"></i></button>', $url);
+                                },
+                                'update' => function ($url, $model) {
+                                    return Html::a('<button class="btn btn-default">Update &nbsp;<i class="glyphicon glyphicon-pencil"></i></button>', $url);
+                                },
+                                'delete' => function ($url, $model) {
+                                    return Html::a('<button class="btn btn-danger">Delete &nbsp;<i class="glyphicon glyphicon-trash"></i></button>', $url,
+                                            ['data-confirm' => 'Are you sure you want to delete this item?', 'data-method' => 'POST']
+                                        );
+                                },
                                 'steps' => function ($url, $model) {
-                                    $url = '/job-step/index/' . $model->id;
+                                    $url = '/job-step/index/'.$model->id;
+
                                     return Html::a(
-                                        '<span class="fa fa-puzzle-piece"></span>',
+                                        '<button class="btn btn-default">Steps &nbsp;<i class="fa fa-puzzle-piece"></i></button>',
                                         $url,
                                     [
                                         'title' => Yii::t('app', 'Steps'),
@@ -45,16 +57,17 @@ $this->params['breadcrumbs'][] = $this->title;
                                     );
                                 },
                                 'recipients' => function ($url, $model) {
-                                    $url = '/recipient/index/' . $model->id;
+                                    $url = '/recipient/index/'.$model->id;
+
                                     return Html::a(
-                                        '<span class="glyphicon glyphicon-envelope"></span>',
+                                        '<button class="btn btn-default">Recipients &nbsp;<i class="glyphicon glyphicon-envelope"></i></button>',
                                         $url,
                                     [
                                         'title' => Yii::t('app', 'Recipients'),
                                     ]
                                     );
-                                }
-                            ]
+                                },
+                            ],
                         ],
                     ],
                 ]); ?>

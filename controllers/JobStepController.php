@@ -2,10 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\PjeJob;
 use Yii;
 use app\models\PjeJobStep;
-use app\models\PjeJobStepSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
@@ -16,7 +15,7 @@ use yii\data\ActiveDataProvider;
 class JobStepController extends BaseController
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function behaviors()
     {
@@ -32,6 +31,7 @@ class JobStepController extends BaseController
 
     /**
      * Lists all PjeJobStep models.
+     *
      * @return mixed
      */
     public function actionIndex($id)
@@ -40,19 +40,22 @@ class JobStepController extends BaseController
             'query' => PjeJobStep::find()->where(['job_id' => $id])->orderBy('order_num'),
             'sort' => false,
             'pagination' => [
-                'pageSize' => 50
-            ]
+                'pageSize' => 50,
+            ],
         ]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-            'jobId' => $id
+            'jobId' => $id,
+            'job' => PjeJob::find()->where(['id' => $id])->one(),
         ]);
     }
 
     /**
      * Displays a single PjeJobStep model.
-     * @param integer $id
+     *
+     * @param int $id
+     *
      * @return mixed
      */
     public function actionView($id)
@@ -65,6 +68,7 @@ class JobStepController extends BaseController
     /**
      * Creates a new PjeJobStep model.
      * If creation is successful, the browser will be redirected to the 'view' page.
+     *
      * @return mixed
      */
     public function actionCreate($id)
@@ -79,15 +83,15 @@ class JobStepController extends BaseController
             }
             $model->order_num = $orderNum;
             if ($model->save()) {
-                return $this->redirect('/job-step/index/' . $id);
+                return $this->redirect('/job-step/index/'.$id);
             } else {
                 return $this->render('create', [
-                    'model' => $model
+                    'model' => $model,
                 ]);
             }
         } else {
             return $this->render('create', [
-                'model' => $model
+                'model' => $model,
             ]);
         }
     }
@@ -95,7 +99,9 @@ class JobStepController extends BaseController
     /**
      * Updates an existing PjeJobStep model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     *
+     * @param int $id
+     *
      * @return mixed
      */
     public function actionUpdate($id)
@@ -103,7 +109,7 @@ class JobStepController extends BaseController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect('/job-step/index/' . $model->job_id);
+            return $this->redirect('/job-step/index/'.$model->job_id);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -114,7 +120,9 @@ class JobStepController extends BaseController
     /**
      * Deletes an existing PjeJobStep model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     *
+     * @param int $id
+     *
      * @return mixed
      */
     public function actionDelete($id)
@@ -123,9 +131,10 @@ class JobStepController extends BaseController
         $jobId = $model->job_id;
         $model->delete();
         PjeJobStep::normalizeOrderNum($jobId);
-        return $this->redirect('/job-step/index/' . $jobId);
+
+        return $this->redirect('/job-step/index/'.$jobId);
     }
-    
+
     public function actionMoveUp($id)
     {
         $model = $this->findModel($id);
@@ -149,9 +158,10 @@ class JobStepController extends BaseController
             $previousStep->save(false);
         }
         PjeJobStep::normalizeOrderNum($model->job_id);
-        return $this->redirect('/job-step/index/' . $model->job_id);
+
+        return $this->redirect('/job-step/index/'.$model->job_id);
     }
-    
+
     public function actionMoveDown($id)
     {
         $model = $this->findModel($id);
@@ -175,14 +185,18 @@ class JobStepController extends BaseController
             $nextStep->save(false);
         }
         PjeJobStep::normalizeOrderNum($model->job_id);
-        return $this->redirect('/job-step/index/' . $model->job_id);
+
+        return $this->redirect('/job-step/index/'.$model->job_id);
     }
 
     /**
      * Finds the PjeJobStep model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
+     *
+     * @param int $id
+     *
      * @return PjeJobStep the loaded model
+     *
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)

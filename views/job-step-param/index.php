@@ -8,6 +8,9 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Params';
+$this->params['breadcrumbs'][] = ['label' => 'Jobs', 'url' => '/job/index'];
+$this->params['breadcrumbs'][] = ['label' => $jobStep->job->title, 'url' => '/job/'.$jobStep->job_id];
+$this->params['breadcrumbs'][] = ['label' => 'Job Steps', 'url' => '/job-step/index/'.$jobStep->job_id];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="pje-job-step-param-index">
@@ -33,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]); ?>
             </div>
               <div class="box-footer">
-                  <?= Html::a('Add param to step', '/job-step-param/create/' . $jobStepId, ['class' => 'btn btn-success']) ?>
+                  <?= Html::a('Add param to step', '/job-step-param/create/'.$jobStepId, ['class' => 'btn btn-success']); ?>
               </div>
             <!-- /.box-body -->
           </div>
