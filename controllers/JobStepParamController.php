@@ -73,11 +73,14 @@ class JobStepParamController extends BaseController
     {
         $model = new PjeJobStepParam();
         $model->job_step_id = $id;
+        $jobStep = PjeJobStep::find()->where(['id' => $id])->one();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect('/job-step-param/index/'.$id);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'jobStepId' => $id,
+                'jobStep' => $jobStep,
             ]);
         }
     }
@@ -93,12 +96,13 @@ class JobStepParamController extends BaseController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $jobStep = PjeJobStep::find()->where(['id' => $model->job_step_id])->one();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect('/job-step-param/index/'.$model->job_step_id);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'jobStep' => $jobStep,
             ]);
         }
     }

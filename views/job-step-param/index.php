@@ -31,7 +31,20 @@ $this->params['breadcrumbs'][] = $this->title;
                         'param_name',
                         'param_value',
 
-                        ['class' => 'yii\grid\ActionColumn'],
+                        [
+                            'class' => 'yii\grid\ActionColumn',
+                            'template' => '{update} {delete}',
+                            'buttons' => [
+                                'update' => function ($url, $model) {
+                                    return Html::a('<button class="btn btn-default">Update &nbsp;<i class="glyphicon glyphicon-pencil"></i></button>', $url);
+                                },
+                                'delete' => function ($url, $model) {
+                                    return Html::a('<button class="btn btn-danger">Delete &nbsp;<i class="glyphicon glyphicon-trash"></i></button>', $url,
+                                            ['data-confirm' => 'Are you sure you want to delete this item?', 'data-method' => 'POST']
+                                        );
+                                },
+                            ],
+                        ],
                     ],
                 ]); ?>
             </div>
