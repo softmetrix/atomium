@@ -31,14 +31,28 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'is_active',
                             'value' => function ($model) {
                                 return $model->is_active == 1 ? 'Yes' : 'No';
-                            }
+                            },
                         ],
-                        ['class' => 'yii\grid\ActionColumn'],
+
+                        [
+                            'class' => 'yii\grid\ActionColumn',
+                            'template' => '{update} {delete}',
+                            'buttons' => [
+                                'update' => function ($url, $model) {
+                                    return Html::a('<button class="btn btn-default">Update &nbsp;<i class="glyphicon glyphicon-pencil"></i></button>', $url);
+                                },
+                                'delete' => function ($url, $model) {
+                                    return Html::a('<button class="btn btn-danger">Delete &nbsp;<i class="glyphicon glyphicon-trash"></i></button>', $url,
+                                            ['data-confirm' => 'Are you sure you want to delete this item?', 'data-method' => 'POST']
+                                        );
+                                },
+                            ],
+                        ],
                     ],
                 ]); ?>
             </div>
               <div class="box-footer">
-                  <?= Html::a('Scan', ['scan'], ['class' => 'btn btn-success']) ?>
+                  <?= Html::a('Scan', ['scan'], ['class' => 'btn btn-success']); ?>
               </div>
             <!-- /.box-body -->
           </div>
