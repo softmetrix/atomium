@@ -30,6 +30,7 @@ phpunit.phar
 config/config.php
 config/additional.php
 config/extra_config.php
+config/schedule.php
 
 # phpcsfixer
 /.php_cs.cache

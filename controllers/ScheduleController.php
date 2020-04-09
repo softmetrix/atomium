@@ -37,6 +37,7 @@ class ScheduleController extends BaseController
     public function actionIndex($id)
     {
         $searchModel = new PjeScheduleSearch();
+        $searchModel->job_id = $id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -75,14 +76,14 @@ class ScheduleController extends BaseController
         $model->job_id = $id;
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
+                $this->regenerateScheduleFile();
+
                 return $this->redirect('/schedule/index/'.$id);
             } else {
                 return $this->render('create', [
                     'model' => $model,
                 ]);
             }
-
-            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -105,6 +106,8 @@ class ScheduleController extends BaseController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->regenerateScheduleFile();
+
             return $this->redirect('/schedule/index/'.$model->job_id);
         } else {
             return $this->render('update', [
@@ -128,6 +131,7 @@ class ScheduleController extends BaseController
         $model = $this->findModel($id);
         $jobId = $model->job_id;
         $model->delete();
+        $this->regenerateScheduleFile();
 
         return $this->redirect('/schedule/index/'.$jobId);
     }
@@ -149,5 +153,21 @@ class ScheduleController extends BaseController
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    private function regenerateScheduleFile()
+    {
+        $fileContent = '<?php'."\n";
+        $filePath = Yii::$app->basePath.'/config/schedule.php';
+        $schedule = PjeSchedule::find()->all();
+        $fileContent .= '$schedule->command(\'close-interrupted\')->cron(\'* * * * *\');'."\n";
+        foreach ($schedule as $s) {
+            $command = $s->job->generateCommand();
+            $fileContent .= '$schedule->exec(\''.$command.'\')->cron(\''.$s->cron_config.'\');'."\n";
+        }
+        $fileContent .= '?>'."\n";
+        @unlink($filePath);
+        touch($filePath);
+        file_put_contents($filePath, $fileContent);
     }
 }

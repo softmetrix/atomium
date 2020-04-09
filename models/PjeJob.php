@@ -120,4 +120,13 @@ class PjeJob extends \yii\db\ActiveRecord
 
         return $rollbackJobs;
     }
+
+    public function generateCommand()
+    {
+        $command = Yii::$app->basePath;
+        $command .= DIRECTORY_SEPARATOR;
+        $command .= 'yii execute-job '.$this->id;
+
+        return $command;
+    }
 }

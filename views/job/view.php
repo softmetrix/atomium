@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="fakeButtons fakeZoom"></div>
         </div>
         <div class="fakeScreen">
-          <p class="line1">$ <?= Yii::$app->basePath.DIRECTORY_SEPARATOR.'yii execute-job '.$model->id; ?></p>
+          <p class="line1">$ <?= $model->generateCommand(); ?></p>
           <p class="line4">><span class="cursor4">_</span></p>
         </div>
         <div class="text-center" style="padding-top: 10px;">
