@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         [
                             'class' => 'yii\grid\ActionColumn',
-                            'template' => '{view} {update} {steps} {recipients} {delete}',
+                            'template' => '{view} {update} {steps} {schedule} {recipients} {delete}',
                             'buttons' => [
                                 'view' => function ($url, $model) {
                                     return Html::a('<button class="btn btn-default">View &nbsp;<i class="glyphicon glyphicon-eye-open"></i></button>', $url);
@@ -53,6 +53,17 @@ $this->params['breadcrumbs'][] = $this->title;
                                         $url,
                                     [
                                         'title' => Yii::t('app', 'Steps'),
+                                    ]
+                                    );
+                                },
+                                'schedule' => function ($url, $model) {
+                                    $url = '/schedule/index/'.$model->id;
+
+                                    return Html::a(
+                                        '<button class="btn btn-default">Schedule &nbsp;<i class="fa fa-clock-o"></i></button>',
+                                        $url,
+                                    [
+                                        'title' => Yii::t('app', 'Schedule'),
                                     ]
                                     );
                                 },
