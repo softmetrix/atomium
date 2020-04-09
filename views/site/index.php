@@ -1,18 +1,23 @@
-<?php $this->beginBlock('content-header') ?>
+<?php
+
+use yii\widgets\Pjax;
+
+$this->beginBlock('content-header'); ?>
 Dashboard
-<?php $this->endBlock() ?>
+<?php $this->endBlock(); ?>
 <?=
 $this->render('_filter', [
     'jobs' => $jobs,
-    'selectedJob' => $selectedJob
+    'selectedJob' => $selectedJob,
 ]);
 ?>
+<?php Pjax::begin(['id' => 'pjax-job-stats']); ?>
 <?=
     $this->render('_widgets', [
         'completedCount' => $completedCount,
         'failedCount' => $failedCount,
         'avgDuration' => $avgDuration,
-        'maxDuration' => $maxDuration
+        'maxDuration' => $maxDuration,
     ]);
 ?>
 <div class="row">
@@ -27,3 +32,16 @@ $this->render('_filter', [
        ?>
     </div>
 </div>
+<?php Pjax::end(); ?>
+
+<?php
+$js = <<<EOT
+    $(function(){
+        function refreshJobData() {
+            $.pjax.reload({container: '#pjax-job-stats'});
+        }
+        setInterval(refreshJobData, 20000);
+    });
+EOT;
+$this->registerJs($js);
+?>
