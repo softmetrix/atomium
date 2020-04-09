@@ -22,14 +22,17 @@ $this->render('_filter', [
 ?>
 <div class="row">
     <div class="col-md-6">
-       <?=
-        $this->render('_last_execution', ['dataProvider' => $lastExecutionsProvider]);
-       ?>
+        <?=
+            $this->render('_last_execution', ['dataProvider' => $lastExecutionsProvider]);
+        ?>
     </div>
-     <div class="col-md-6">
-       <?=
-        $this->render('_failed_execution', ['dataProvider' => $failedExecutionsProvider]);
-       ?>
+    <div class="col-md-6">
+        <?=
+            $this->render('_failed_execution', ['dataProvider' => $failedExecutionsProvider]);
+        ?>
+        <?=
+            $this->render('_next_execution', ['dataProvider' => $nextExecutionsProvider]);
+        ?>
     </div>
 </div>
 <?php Pjax::end(); ?>
