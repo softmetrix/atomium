@@ -61,8 +61,17 @@ class StepController extends BaseController
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $stepsPath = Yii::$app->params['steps_path'];
+        $filePath = $stepsPath.DIRECTORY_SEPARATOR.$model->step_class.'.php';
+        $code = '';
+        if (file_exists($filePath)) {
+            $code = file_get_contents($filePath);
+        }
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'code' => $code,
         ]);
     }
 
