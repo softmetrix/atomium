@@ -36,24 +36,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         [
                             'class' => 'yii\grid\ActionColumn',
-                            'template' => '{update} {delete}',
+                            'template' => '{view}',
                             'buttons' => [
-                                'update' => function ($url, $model) {
-                                    return Html::a('<button class="btn btn-default">Update &nbsp;<i class="glyphicon glyphicon-pencil"></i></button>', $url);
-                                },
-                                'delete' => function ($url, $model) {
-                                    return Html::a('<button class="btn btn-danger">Delete &nbsp;<i class="glyphicon glyphicon-trash"></i></button>', $url,
-                                            ['data-confirm' => 'Are you sure you want to delete this item?', 'data-method' => 'POST']
-                                        );
+                                'view' => function ($url, $model) {
+                                    return Html::a('<button class="btn btn-default">View &nbsp;<i class="glyphicon glyphicon-eye-open"></i></button>', $url);
                                 },
                             ],
                         ],
                     ],
                 ]); ?>
             </div>
-              <div class="box-footer">
-                  <?= Html::a('Scan', ['scan'], ['class' => 'btn btn-success']); ?>
-              </div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->

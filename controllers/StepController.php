@@ -5,7 +5,6 @@ namespace app\controllers;
 use Yii;
 use app\models\PjeStep;
 use app\models\PjeStepSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Inflector;
@@ -16,7 +15,7 @@ use yii\helpers\Inflector;
 class StepController extends BaseController
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function behaviors()
     {
@@ -30,8 +29,16 @@ class StepController extends BaseController
         ];
     }
 
+    public function beforeAction($action)
+    {
+        $this->scan();
+
+        return parent::beforeAction($action);
+    }
+
     /**
      * Lists all PjeStep models.
+     *
      * @return mixed
      */
     public function actionIndex()
@@ -47,7 +54,9 @@ class StepController extends BaseController
 
     /**
      * Displays a single PjeStep model.
-     * @param integer $id
+     *
+     * @param int $id
+     *
      * @return mixed
      */
     public function actionView($id)
@@ -60,6 +69,7 @@ class StepController extends BaseController
     /**
      * Creates a new PjeStep model.
      * If creation is successful, the browser will be redirected to the 'view' page.
+     *
      * @return mixed
      */
     public function actionCreate()
@@ -78,7 +88,9 @@ class StepController extends BaseController
     /**
      * Updates an existing PjeStep model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     *
+     * @param int $id
+     *
      * @return mixed
      */
     public function actionUpdate($id)
@@ -97,7 +109,9 @@ class StepController extends BaseController
     /**
      * Deletes an existing PjeStep model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     *
+     * @param int $id
+     *
      * @return mixed
      */
     public function actionDelete($id)
@@ -111,8 +125,11 @@ class StepController extends BaseController
     /**
      * Finds the PjeStep model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
+     *
+     * @param int $id
+     *
      * @return PjeStep the loaded model
+     *
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
@@ -123,16 +140,15 @@ class StepController extends BaseController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    
-    public function actionScan()
+
+    private function scan()
     {
         $stepsPath = Yii::$app->params['steps_path'];
-        $files = glob($stepsPath . DIRECTORY_SEPARATOR . '*Step.php');
+        $files = glob($stepsPath.DIRECTORY_SEPARATOR.'*Step.php');
         $this->addNewSteps($files);
         $this->markUnexistingStepsAsInactive($files);
-        return $this->redirect(['index']);
     }
-    
+
     private function addNewSteps($files)
     {
         foreach ($files as $file) {
@@ -146,7 +162,7 @@ class StepController extends BaseController
             }
         }
     }
-    
+
     private function markUnexistingStepsAsInactive($files)
     {
         $classes = array_map(function ($file) {
