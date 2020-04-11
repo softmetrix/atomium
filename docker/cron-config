@@ -1,0 +1,1 @@
+* * * * * bash -l -c 'source /root/project_env.sh; /var/www/html/atomium/yii schedule/run --scheduleFile=@app/config/schedule.php 1>> /dev/null 2>&1'

@@ -8,6 +8,7 @@ then
         atomium_runtime="$atomium_dir/runtime"
         atomium_assets="$atomium_dir/web/assets"
         atomium_git="$atomium_dir/.git"
+        atomium_schedule="$atomium_dir/config/schedule.php"
         atomium_docker_zip="$atomium_dir/docker/atomium.zip"
         if [ ! -d "$atomium_dir" ]
         then
@@ -19,6 +20,7 @@ then
             rm -fR $atomium_runtime/*
             rm -fR $atomium_assets/*
             rm -fR $atomium_git
+            rm -f $atomium_schedule
             rm -f $atomium_docker_zip
             cd $1
             zip -r atomium.zip atomium
