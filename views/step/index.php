@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'step_class',
                         [
                             'attribute' => 'is_active',
+                            'filter' => '',
                             'value' => function ($model) {
                                 return $model->is_active == 1 ? 'Yes' : 'No';
                             },

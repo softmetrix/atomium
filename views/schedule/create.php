@@ -1,7 +1,5 @@
 <?php
 
-use yii\helpers\Html;
-
 /* @var $this yii\web\View */
 /* @var $model app\models\PjeSchedule */
 
@@ -12,8 +10,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Schedule', 'url' => '/schedule/ind
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="pje-schedule-create">
-
-    <h1><?= Html::encode($this->title); ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

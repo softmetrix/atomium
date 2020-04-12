@@ -7,17 +7,15 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\PjeSchedule */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
-<div class="pje-schedule-form">
-
+<div class="box box-primary">
     <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'cron_config')->textInput(['maxlength' => true]); ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']); ?>
+    <div class="box-body">
+        <?= $form->field($model, 'cron_config')->textInput(['maxlength' => true]); ?>
     </div>
+    <!-- /.box-body -->
 
-    <?php ActiveForm::end(); ?>
-
+    <div class="box-footer">
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']); ?>  
+    </div>
+    <?php ActiveForm::end(); ?> 
 </div>
