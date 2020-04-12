@@ -11,7 +11,7 @@ class SleepXSecondsStep extends Step
             $seconds = $this->params['seconds'];
         }
         sleep($seconds);
-
-        return self::generateResponse(1, 'Done');
+        $this->message = 'Done';
+        $this->success = 1;
     }
 }
