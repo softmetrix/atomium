@@ -1,21 +1,15 @@
 <?php
 
-use yii\helpers\Html;
-
 /* @var $this yii\web\View */
 /* @var $model app\models\PjeRecipient */
 
-$this->title = 'Update Pje Recipient: ' . $model->id;
+$this->title = 'Update Recipient';
 $this->params['breadcrumbs'][] = ['label' => 'Pje Recipients', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="pje-recipient-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <?= $this->render('_form', [
         'model' => $model,
-    ]) ?>
-
+    ]); ?>
 </div>
